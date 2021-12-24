@@ -6,8 +6,10 @@ import axios from 'axios';
 const Main = () => {
 
 	const [list, setList] = useState([]);
+	const [filter, setFilter] = useState( );
 
 	const filterListingData = (identifier) => {
+		setFilter(identifier);
 		axios.get('http://localhost:3001/properties').then(result => {
 			if(result){
 				if(isNaN(identifier)){
@@ -23,19 +25,15 @@ const Main = () => {
 	}
 
 	const handleClick = (e) => {
-	    let listId = e.target.value,
-	    	listIdData = list[listId - 1];
-
-	    axios.put(`http://localhost:3001/properties/${listId}`, { ...listIdData, "status": listIdData.status ? 0 : 1 })
-	      .then(res => {
-	      	if(res.data){
-	      		axios.get('http://localhost:3001/properties').then(result => {
-					if(result){
-						setList(result.data);
-					}
-				})
-	      	}
-	      })
+	    let listId = e.target.value;
+	    	axios.get(`http://localhost:3001/properties/${listId}`).then(result => {
+			    axios.put(`http://localhost:3001/properties/${listId}`, { ...result.data, "status": result.data.status ? 0 : 1 })
+			      .then(res => {
+			      	if(res.data){
+						filterListingData(filter);	
+			      	}
+		      	})
+		  	})
   	}
 
 	useEffect(() => {

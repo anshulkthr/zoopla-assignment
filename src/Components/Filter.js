@@ -10,7 +10,6 @@ const Filter = (props) => {
 	const [alignment, setAlignment] = useState('left');
 
 	const handleAlignment = (event, newAlignment) => {
-		event.preventDefault();
     	setAlignment(newAlignment);
     	let filterIdentifier = Number(event.target.getAttribute('filter-id'));
     	props.filterData(filterIdentifier);
